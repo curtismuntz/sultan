@@ -74,11 +74,11 @@ class Sultan(Base):
     """
 
     @classmethod
-    def load(cls, 
-        cwd=None, sudo=False, user=None, 
+    def load(cls,
+        cwd=None, sudo=False, user=None,
         hostname=None, env=None, logging=True,
         executable=None,
-        ssh_config=None, src=None, 
+        ssh_config=None, src=None,
         **kwargs):
 
         # initial checks
@@ -175,8 +175,8 @@ class Sultan(Base):
             return Redirect(self, name)
         else:
             # When calling Bash Commands from Python with Sultan, we encounter
-            # an issue where the Python doesn't allow special characters like 
-            # dashes (i.e.: apt-get). To get around this, we will use 2 
+            # an issue where the Python doesn't allow special characters like
+            # dashes (i.e.: apt-get). To get around this, we will use 2
             # underscores one after another to indicate that we want it to be a
             # dash, and replace it accordingly before calling Command
             name = name.replace('__', '-')
@@ -216,10 +216,10 @@ class Sultan(Base):
             result.dump_exception()
             if halt_on_nonzero:
                 raise e
-                
+
         finally:
             self.clear()
-        
+
         return result
 
     def _add(self, command):
@@ -291,7 +291,7 @@ class Sultan(Base):
             params = {
                 'user': user,
                 'hostname': hostname,
-                'command': output, 
+                'command': output,
                 'ssh_config': ' %s ' % ssh_config if ssh_config else ' '
             }
             output = "ssh%(ssh_config)s%(user)s@%(hostname)s '%(command)s'" % (params)
@@ -346,7 +346,7 @@ class Sultan(Base):
     def stdin(self, message):
 
         return input(message)
-    
+
 
 class BaseCommand(Base):
     """
@@ -499,12 +499,12 @@ class Config(object):
             shorthand = self.params_map[key]['shorthand']
             output.append(shorthand)
             output.append(str(value))
-            
+
         return ' '.join(output)
 
     def validate_config(self):
         '''
-        Validates the provided config to make sure all the required fields are 
+        Validates the provided config to make sure all the required fields are
         there.
         '''
         # first ensure that all the required fields are there
@@ -512,7 +512,7 @@ class Config(object):
             if key_config['required']:
                 if key not in self.config:
                     raise ValueError("Invalid Configuration! Required parameter '%s' was not provided to Sultan.")
-        
+
         # second ensure that the fields that were pased were actually fields that
         # can be used
         for key in self.config.keys():
@@ -530,6 +530,10 @@ class SSHConfig(Config):
         },
         'port': {
             'shorthand': '-p',
+            'required': False
+        },
+        'option': {
+            'shorthand': '-o',
             'required': False
         },
     }
